@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
-import { UpdateCharacterDto } from './dto/update-character.dto';
+import { UpdateStatusDto } from './dto/update-character.dto';
+import { CharacterStatus } from './entities/character.entity';
 
 @Controller('characters')
 export class CharactersController {
@@ -13,22 +14,27 @@ export class CharactersController {
   }
 
   @Get()
-  findAll() {
-    return this.charactersService.findAll();
+  findAll(@Query('status') status?: CharacterStatus, @Query('teamId') teamId?: string) {
+    return this.charactersService.findAll(status, teamId ? Number(teamId) : undefined);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.charactersService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.charactersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCharacterDto: UpdateCharacterDto) {
-    return this.charactersService.update(+id, updateCharacterDto);
+  @Put(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateCharacterDto) {
+    return this.charactersService.update(id, dto);
+  }
+
+  @Patch(':id/status')
+  changeStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateStatusDto) {
+    return this.charactersService.changeStatus(id, dto.status);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.charactersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.charactersService.remove(id);
   }
 }
