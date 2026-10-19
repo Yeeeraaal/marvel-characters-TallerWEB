@@ -8,32 +8,32 @@ export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
   @Post()
-  create(@Body() createCharacterDto: CreateCharacterDto) {
-    return this.charactersService.create(createCharacterDto);
+  create(@Body() createCharacterDto: CreateCharacterDto): Promise<any> {
+    return this.charactersService.create(createCharacterDto as any);
   }
 
   @Get()
-  findAll(@Query('status') status?: CharacterStatusDto, @Query('teamId') teamId?: string) {
+  findAll(@Query('status') status?: CharacterStatusDto, @Query('teamId') teamId?: string): Promise<any> {
     return this.charactersService.findAll(status as any, teamId ? Number(teamId) : undefined);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.charactersService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateCharacterDto) {
-    return this.charactersService.update(id, dto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateCharacterDto): Promise<any> {
+    return this.charactersService.update(id, dto as any);
   }
 
   @Patch(':id/status')
-  changeStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateStatusDto) {
+  changeStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateStatusDto): Promise<any> {
     return this.charactersService.changeStatus(id, dto.status);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.charactersService.remove(id);
   }
 }
