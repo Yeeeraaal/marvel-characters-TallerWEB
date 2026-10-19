@@ -1,6 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsInt, Min, Max, IsBoolean, IsEnum } from 'class-validator';
-import { CharacterStatus } from '../entities/character.entity';
+
+export enum CharacterStatusDto {
+  ACTIVE = 'ACTIVE',
+  INJURED = 'INJURED',
+  MISSING = 'MISSING',
+  RETIRED = 'RETIRED',
+}
 
 export class CreateCharacterDto {
   @ApiProperty({ example: 'Spider-Man' })
@@ -24,10 +30,10 @@ export class CreateCharacterDto {
   @Max(100)
   powerLevel: number;
 
-  @ApiPropertyOptional({ enum: CharacterStatus, default: CharacterStatus.ACTIVE })
-  @IsEnum(CharacterStatus)
+  @ApiPropertyOptional({ enum: CharacterStatusDto, default: CharacterStatusDto.ACTIVE })
+  @IsEnum(CharacterStatusDto)
   @IsOptional()
-  status?: CharacterStatus;
+  status?: any;
 
   @ApiPropertyOptional({ example: false, default: false })
   @IsBoolean()
