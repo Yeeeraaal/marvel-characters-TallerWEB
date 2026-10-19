@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { CreateCharacterDto } from './dto/create-character.dto';
+import { CreateCharacterDto, CharacterStatusDto } from './dto/create-character.dto';
 import { UpdateStatusDto } from './dto/update-character.dto';
-import { CharacterStatus } from './entities/character.entity';
 
 @Controller('characters')
 export class CharactersController {
@@ -14,8 +13,8 @@ export class CharactersController {
   }
 
   @Get()
-  findAll(@Query('status') status?: CharacterStatus, @Query('teamId') teamId?: string) {
-    return this.charactersService.findAll(status, teamId ? Number(teamId) : undefined);
+  findAll(@Query('status') status?: CharacterStatusDto, @Query('teamId') teamId?: string) {
+    return this.charactersService.findAll(status as any, teamId ? Number(teamId) : undefined);
   }
 
   @Get(':id')
