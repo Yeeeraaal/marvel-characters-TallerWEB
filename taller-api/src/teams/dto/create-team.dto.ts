@@ -1,27 +1,41 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, Min, Max, IsBoolean } from 'class-validator';
-
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+  IsBoolean,
+  IsArray,
+} from 'class-validator';
 
 export class CreateTeamDto {
-@ApiProperty({ description: 'The name of the team' })
-@IsString()
-@IsNotEmpty()
-name: string;
-  
-@ApiProperty({ description: 'The base of the team' })
-@IsString()
-@IsNotEmpty()
-base: string;
-  
-@ApiProperty({ description: 'The year the team was founded' })
-@IsNotEmpty()
-@Min(1900)
-@Max(2100)
-foundedYear: number;
-  
-@ApiProperty({ description: 'Whether the team is active' })
-@IsNotEmpty()
-@IsBoolean()
-active: boolean;
-  
+  @ApiProperty({ example: 'Avengers' })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiPropertyOptional({ example: 'Avengers Tower, New York' })
+  @IsString()
+  @IsOptional()
+  base?: string;
+
+  @ApiPropertyOptional({ example: 1963 })
+  @IsInt()
+  @Min(1900)
+  @Max(2100)
+  @IsOptional()
+  foundedYear?: number;
+
+  @ApiPropertyOptional({ example: true, default: true })
+  @IsBoolean()
+  @IsOptional()
+  active?: boolean;
+
+  @ApiPropertyOptional({ example: [1, 2], type: [Number] })
+  @IsArray()
+  @IsInt({ each: true })
+  @IsOptional()
+  characterIds?: number[];
 }
