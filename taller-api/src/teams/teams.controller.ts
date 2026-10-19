@@ -20,30 +20,30 @@ import { AssignCharactersDto } from './dto/assign-characters.dto';
 @ApiTags('teams')
 @Controller('teams')
 export class TeamsController {
-  constructor(private readonly teamsService: TeamsService) {}
+  constructor(private readonly teamsService: TeamsService) { }
 
   @Get()
   @ApiOperation({ summary: 'Lista todos los equipos' })
-  findAll() {
+  findAll(): Promise<any> {
     return this.teamsService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtiene un equipo por su id' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.teamsService.findOne(id);
   }
 
   @Get(':id/characters')
   @ApiOperation({ summary: 'Lista los personajes que pertenecen al equipo' })
-  findCharacters(@Param('id', ParseIntPipe) id: number) {
+  findCharacters(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.teamsService.findCharactersByTeam(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Crea un equipo' })
   @ApiResponse({ status: 201, description: 'Equipo creado exitosamente' })
-  create(@Body() createTeamDto: CreateTeamDto) {
+  create(@Body() createTeamDto: CreateTeamDto): Promise<any> {
     return this.teamsService.create(createTeamDto);
   }
 
@@ -52,7 +52,7 @@ export class TeamsController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTeamDto: UpdateTeamDto,
-  ) {
+  ): Promise<any> {
     return this.teamsService.update(id, updateTeamDto);
   }
 
@@ -61,14 +61,14 @@ export class TeamsController {
   assignCharacters(
     @Param('id', ParseIntPipe) id: number,
     @Body() assignDto: AssignCharactersDto,
-  ) {
+  ): Promise<any> {
     return this.teamsService.assignCharactersToTeam(id, assignDto.characterIds);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Elimina un equipo' })
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.teamsService.remove(id);
   }
 }
